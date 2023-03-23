@@ -1,0 +1,414 @@
+\documentclass[11pt]{article}
+\synctex=1
+\usepackage{graphicx}
+\usepackage[utf8x]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, inner=2cm, outer=4.9cm, marginparwidth=3.9cm, marginparsep=0.5cm]{geometry}
+\usepackage[factor=1000]{microtype}     %awesome package to deal with text spacing, special char in margin...
+\usepackage{lmodern}                    %best font for latex (latin modern is derived from computer modern)
+\usepackage{amssymb,array}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xspace}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{upquote}
+\usepackage{framed}
+\usepackage{marginnote}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+
+\author{CoderDojo Seneffe}
+
+\title{Réalisation du jeu OXO avec Python3, Pygame Zero et Mu}
+\date{Octobre 2020}
+
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.7,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{deepgray}{rgb}{0.4,0.4,0.4}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+\renewcommand{\familydefault}{\sfdefault}
+\lstset{language=Python,
+texcl=true,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+commentstyle=\ttb\color{deepgray},
+showstringspaces=false            %
+}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
+
+\newcommand{\trad}[1]{\marginnote{\textcolor{deepblue}{#1}}}
+
+\usetikzlibrary{turtle}
+
+\begin{document}
+
+\maketitle
+
+Pendant cette session,\trad{\RaggedRight Retrouve les traductions anglais~$\rightarrow$~français dans cette marge.}
+nous allons découvrir comment créer un jeu OXO avec Python.
+
+OXO (aussi appelé Tic-Tac-Toe ou Morpion) est considéré comme le premier jeu vidéo, créé en 1952.
+
+Sur une grille de 3x3, deux joueurs s'affrontent. Ils doivent remplir chacun à leur tour une case de la grille avec le symbole qui leur est attribué : O ou X. Le gagnant est celui qui arrive à aligner trois symboles identiques, horizontalement, verticalement ou en diagonale. Le joueur jouant X commence la partie.
+
+Pour créer notre jeu de OXO, nous allons utiliser Pygame Zero, une bibliothèque qui facilite la création de jeu avec Python,
+ainsi que Mu, un environnement de programmation (IDE) pour écrire et exécuter notre programme.
+Pygame Zero va nous permettre de gérer facilement les images, le clavier et les sons pour nous concentrer sur la programmation du jeu.
+
+Attention, Pygame Zero est différent (et plus simple) que Pygame. Si tu cherches des exemples sur internet, il faut bien faire la différence.
+
+\section{Installation de Mu}
+
+Si Mu n'est pas déjà installé sur ton ordinateur, tu peux le télécharger sur \url{https://codewith.mu/en/download}.\\
+Il n'est pas nécessaire d'installer Pygame Zero, cela est compris lorsque tu installes Mu.\\
+Sur Windows et Mac, il n'est pas nécessaire non plus d'installer Python.
+
+\section{Hello World}
+
+\begin{enumerate}
+    \item Si tu ne l'as pas déjà fait, ouvre Mu, tu devrais voir un fichier vide. Si ce n'est pas le cas, tu peux créer un nouveau fichier en cliquant sur \texttt{New}.
+    
+    \item Mu dispose de plusieurs modes en fonction de ce que tu veux faire comme type de programme. On va commencer par un exemple de Python "simple", sans Pygame Zero. Clique sur \texttt{Mode} et choisi \texttt{Python 3}.
+
+    \item Tape le code suivant dans le fichier :
+\begin{lstlisting}
+print("Hello World !")
+\end{lstlisting}
+
+    \item Clique sur \texttt{Run} ou \texttt{Lancer} pour lancer ton programme, tu devras choisir un nom pour sauvegarder celui-ci.
+\end{enumerate}
+
+Que se passe-t-il~?
+
+Félicitations~! Tu viens d'écrire ton premier programme en Python.
+Tu peux modifier la ligne de code pour faire dire ce que tu veux à ton programme.
+
+\begin{framed}
+Petite astuce~:~pour chaque étape de cette session, utilise un fichier différent.
+Ça te permettra de garder une trace de ce que tu as fait.
+C'est pratique pour se souvenir de comment tu as fait les choses~!
+
+Dans Mu, tu peux double-cliquer sur le nom du fichier dans l'onglet pour lui donner un autre nom.
+\end{framed}
+
+\section{Les listes en Python}
+
+Dans notre programme, nous aurons besoin d'utiliser des listes.
+
+Une liste en Python est un objet permettant de stocker un ensemble d'éléments, dans un ordre donné. On peut y placer des chiffres, des mots, ... et même une autre liste.
+
+Voici un exemple de liste de mots
+\begin{lstlisting}
+  liste = ['rouge', 'vert', 'bleu']
+\end{lstlisting}
+
+On peut accéder à un élément de la liste en utilisant son index (sa position), en comptant à partir de 0. Affichons par exemple le premier élément de la liste
+\begin{lstlisting}
+  print(liste[0])
+\end{lstlisting}
+
+Si on veut parcourir l'ensemble de la liste, on peut utiliser une boucle comme ceci
+\begin{lstlisting}
+  for couleur in enumerate(liste):
+      print(couleur)
+\end{lstlisting}
+\marginnote{\textcolor{deepblue}{for~=~pour\\in~=~dans\\enumerate~=énumérer}}[-3,5em]
+
+Si tu exécutes ce programme, qu'affiche-t-il ?
+
+On remarque que la variable couleur ne contient pas seulement l'élément de la liste mais aussi sa position. La fonction enumerate retourne en fait un tuple (un couple) de 2 éléments, la position et l'élément.
+
+\section{Les tuples}
+
+Un tuple est très similaire à une liste, c'est aussi une collection d'éléments stockés dans un ordre donné, mais à la différence des listes, une fois créé un tuple ne peut plus être modifié.
+
+Les tuples sont souvent utilisés en Python pour permettre à une fonction de retourner plusieurs valeurs, comme la fonction enumerate ci-dessus.
+
+Comme pour une liste, on peut accéder à un élément du tuple en utilisant son index.
+
+Modifie le programme précédent pour n'afficher que la couleur.
+
+On peut aussi assigner la valeur de chacun des différents éléments d'un tuple directement à des variables en une opération appelée "unpacking" (qu'on pourrait traduire par "déballage").
+
+Dans l'exemple ci-dessus on aurait pu écrire la boucle\\
+\lstinline{for position, couleur in enumerate(liste):}\\
+afin d'avoir directement accès au nom de la couleur.
+
+\section{Bonjour Pygame Zero}
+
+Maintenant, jouons avec Pygame Zero. Pour cela on va changer de mode dans Mu. Clique sur \texttt{Mode} et choisi \texttt{Pygame Zero}.
+
+Nous allons commencer par afficher la fenêtre dans laquelle le jeux se déroulera et en colorier le fond en vert.
+
+\begin{lstlisting}
+WIDTH = 200
+HEIGHT = 200
+
+def draw():
+    screen.fill((0, 255, 0))
+\end{lstlisting}
+\marginnote{\textcolor{deepblue}{WIDTH~=~largeur\\HEIGHT~=~hauteur}}[-7em]
+\marginnote{\textcolor{deepblue}{draw~=~dessiner\\screen~=~écran\\fill~=~remplir}}[-3.5em]
+
+\begin{enumerate}
+    \item Clique sur \texttt{New} ou \texttt{Nouveau} pour créer un nouveau fichier.
+
+    \item Recopie le programme ci-dessus dans l'éditeur.
+    
+    \item Clique sur \texttt{Play} ou \texttt{Jouer} pour exécuter le programme. Tu devras donner un nom à ton fichier si ce n'est pas déjà fait, par exemple \texttt{OXO1}.
+
+          Une fenêtre s'est-elle ouverte~?
+          Le fond est-il vert~?
+
+    \item Peux-tu changer la taille de la fenêtre et la couleur du fond ?
+\end{enumerate}
+
+\subsection*{Quelques explications}
+
+Pygame Zero te simplifie la vie au maximum et a déjà programmé toute une série de choses pour toi, comme par exemple ouvrir une fenêtre pour ton jeu. Si tu ne précise rien, Pygame Zero décide de la taille de la fenêtre.\\
+Mais il te donne la possibilité de choisir toi même la taille à travers des variables (\lstinline{WIDTH} et \lstinline{HEIGHT}).\\
+En assignant une valeur à ces variables au début du programme, c'est toi qui choisi la taille de la fenêtre.
+
+Pygame Zero sait aussi quand il est nécessaire de dessiner dans la fenêtre et quand c'est le cas, il te demande de le faire en appelant \lstinline{draw()}.\\
+Tu dois donc définir une fonction portant le nom de \lstinline{draw} et y inclure le code qui va dessiner à l'écran.\\
+C'est ce que le mot clé \lstinline{def} indique (\lstinline{def} pour define, qui veut dire définir en français).\\
+Attention à ne pas oublier les parenthèses après le nom de ta fonction.\\
+Les fonctions peuvent prendre des paramètres, qu'on défini entre les parenthèses, mais même quand il n'y a aucun paramètre, les parenthèses sont nécessaires.
+\\
+
+\pagebreak
+
+\section{Le positionnement des objects}
+
+Avant de dessiner la grille de jeu, il est important de savoir comment
+sont positionnés les éléments sur l'écran.
+La position de chaque élément est définie par des coordonnées x et y.
+
+\begin{center}
+\begin{tikzpicture}[x=0.01cm,y=0.01cm]
+
+    \draw[very thick] (0, 0) -- (0, 720) -- (960, 720) -- (960, 0) -- cycle ;
+    \node[deepred, above=3mm] at (0, 720) {\lstinline{x=0} et \lstinline{y=0}};
+    \node[deepred, above=3mm] at (960, 720) {\lstinline{x=WIDTH}\trad{width~=~largeur} et \lstinline{y=0}};
+    \node[deepred, below=3mm] at (0, 0) {\lstinline{x=0} et \lstinline{y=HEIGHT}};
+    \node[deepred, below=3mm] at (960, 0) {\lstinline{x=WIDTH} et \lstinline{y=HEIGHT}\trad{height~=~hauteur}};
+
+    \foreach \corner in {(0,0), (0, 720), (960, 720), (960, 0)}{
+        \fill[deepred] \corner circle (0.2cm);
+    }
+
+    \draw[very thick, deepred, ->] (40, 680) -- (40,40);
+    \draw[very thick, deepred, ->] (40, 680) -- (920,680);
+
+    \node[very thick, anchor=north, deepred] at (880,680) {\textbf{X}};
+    \node[very thick, anchor=west, deepred] at (40,80) {\textbf{Y}};
+
+\end{tikzpicture}
+\end{center}
+
+\begin{description}
+    \item[L'axe horizontal (X)] va de gauche à droite.
+    Sur le bord gauche de la fenêtre, il a la valeur 0.
+    Sur le bord droit de la fenêtre, il a la valeur \lstinline{WIDTH},
+    qui est la largeur de la fenêtre.
+    
+    \item[L'axe vertical (Y)] va de haut en bas.
+    Sur le bord supérieur de la fenêtre, il a la valeur 0.
+    Sur le bord inférieur de la fenêtre, il a la valeur \lstinline{HEIGHT},
+    qui est la hauteur de la fenêtre.
+\end{description}
+
+\begin{enumerate}
+    \item Donne un nouveau nom à ton fichier, par exemple \texttt{OXO2}.
+    \item Modifie ton fichier de la façon suivante:
+    \marginnote{\textcolor{deepblue}{clear~=~effacer}}[6.5em]
+    \marginnote{\textcolor{deepblue}{draw~=~dessiner\\line~=ligne}}[9em]
+\begin{lstlisting}
+WIDTH = 650
+HEIGHT = 650
+
+def draw():
+    screen.clear()
+    screen.draw.line((250, 100), (250, 550), (255, 255, 255))
+\end{lstlisting}
+
+L'instruction \lstinline{screen.draw.line} permet de dessiner une ligne entre 2 points, donnés comme les 2 premiers paramètres de la fonction. Le 3\textsuperscript{ème} paramètre indique la couleur de la ligne, exprimée comme un tuple indiquant l'intensité (entre 0 et 255) des 3 couleurs de base (rouge, vert et bleu) composant la couleur voulue. 
+
+    \item Clique sur \texttt{Play} ou \texttt{Jouer} pour exécuter le programme.
+
+    \item Vois-tu une ligne à l'écran?
+    Peux-tu compléter le code pour dessiner la grille de jeu complète?
+\end{enumerate}
+
+\section{Un peu de nettoyage}
+
+Si plus tard tu veux regarder un programme que tu as fait ou le donner à quelqu'un d'autre, c'est important que le programme soit lisible.
+
+Il est donc intéressant de donner des noms parlants aux éléments du programme.
+
+Modifie ton programme en utilisant des constantes pour les positions de la grille et pour la taille de chaque case.
+
+En python, une constante est une variable à laquelle on assigne une valeur qu'une seule fois et qu'on écrit, par convention, en majuscule.
+
+\section{Afficher O et X}
+
+Nous pouvons maintenant dessiner le O ou le X sur la grille.
+
+Pour ce faire, nous allons simplement afficher le texte 'O' ou 'X' à l'endroit approprié en utilisant la fonction
+\begin{lstlisting}
+  screen.draw.textbox(texte, Rect(x, y, largeur, hauteur))
+\end{lstlisting}
+
+qui affiche le texte en prenant toute la place dans le rectangle donné.
+
+Marque à présent 2 cases de ton choix dans la grille, une avec un X, une avec un O.
+
+\section{Stocker la grille et l'afficher}
+
+Tu sais à présent marquer une case avec un X ou un O. Mais pour jouer, ton programme doit retenir où les joueurs ont placé des Xs et des Os.
+
+Pour cela, nous allons stocker la grille dans une variable, et pour chaque case, indiquer si elle est vide, contient un X ou un O.
+
+Ajoute une variable pour contenir la grille, initialise la avec des cases vides et dessine la grille à partir de cette variable.
+
+\textit{
+Souviens-toi des listes dont nous avons parlé plus tôt.\\
+Tu peux utiliser un espace pour indiquer le vide.\\
+C'est la fonction \lstinline{draw} qui est utilisée pour l'affichage à l'écran.
+}
+
+\section{Utiliser la souris pour placer une marque}
+
+Maintenant que tu affiches la grille, on voudrait pouvoir placer un X ou un O dans une case, par exemple en cliquant dessus avec la souris.
+
+PyGame Zero capture automatiquement les événements liés à la souris et appelle une fonction pour te prévenir.
+La fonction ci-dessous est appelée quand on appuie sur un bouton de la souris
+\begin{lstlisting}
+  def on_mouse_down(pos):
+\end{lstlisting}
+\lstinline{pos} te donne la position où la souris se trouvait quand on a appuyé sur le bouton.\\
+Il s'agit d'un tuple représentant les coordonnées: \lstinline{pos[0]} te donne le premier élément, qui correspond à x et \lstinline{pos[1]} te donne le second, qui correspond à y.
+
+\begin{enumerate}
+    \item Capture la position de la souris et affiche la (avec un print).
+    \item En fonction de la position de la souris, calcule la case de la grille sur laquelle on a cliqué (indice: // permet de réaliser une division entière).
+    \item Place un X dans la case sélectionnée.
+\end{enumerate}
+
+\section{A chacun son tour}
+
+Pour l'instant, à chaque fois qu'on clique sur une case, on ajoute un X. On voudrait ajouter un X, puis un O, puis un X et ainsi de suite.
+
+\begin{enumerate}
+    \item Modifie le programme pour qu'on change entre X et O à chaque tour.
+    \item Que se passe-t-il si tu cliques sur une case déjà occupée.
+\end{enumerate}
+
+\textit{
+Tu peux utiliser une variable pour stocker le symbole à utiliser à chaque tour.\\
+Attention: pour changer la valeur d'une variable globale dans une fonction, il faut l'indiquer, par exemple \lstinline{global ma_variable}
+}
+
+\section{Détecter si un joueur gagne}
+
+On voudrait maintenant que le programme détecte quand un joueur vient de créer une ligne gagnante.
+\begin{enumerate}
+    \item Quelles sont les lignes gagnantes possibles ?
+    \item Ecrit une fonction qui teste si on vient de créer une de ces lignes dans la grille.
+    \item Si le coup qu'on vient de jouer est gagnant, afficher le nom du gagnant à l'écran et arrêter le partie.
+    \item Et si la grille est remplie et que personne n'a gagné? C'est une égalité, affiche un message dans ce cas.
+\end{enumerate}
+
+\section{On rejoue ?}
+
+Une fois la partie terminée, on ne peut pour l'instant plus rien faire. Si on désire jouer une nouvelle partie, on doit quitter le programme et le relancer.
+
+On pourrait par exemple recommencer une partie en appuyant sur une touche.
+
+Comme c'était le cas pour la souris, PyGame Zero détecte automatiquement les événements liés au clavier et appelle la fonction \lstinline{on_key_down(key)} pour te prévenir qu'on a appuyé sur une touche. 
+
+\begin{enumerate}
+    \item Détecte quand on appuie sur une touche (par exemple n, pour nouvelle partie) et recommence une partie.
+    \item As-tu bien pensé à tout ce qu'on doit faire quand on recommence une partie ?
+\end{enumerate}
+
+\pagebreak
+
+\section{Faire jouer l'ordinateur}
+
+N'as-tu pas envie de pouvoir jouer contre l'ordinateur ?\\
+On va maintenant modifier le programme pour que l'ordinateur joue le tour des Os.
+
+Dans un premier temps, l'ordinateur va choisir une case libre au hasard.
+
+\subsection*{Choisir un nombre au hasard}
+
+Python offre une fonction pour choisir un nombre entier au hasard: \lstinline{randint()}, celle-ci accepte 2 paramètres indiquant l'interval dans lequel les nombres sont générés (le plus petit et le plus grand nombre possible). Attention, cette fonction se trouve dans un module séparé, qu'il faut importer dans le programme, comme le montre le code ci-dessous.
+
+\begin{lstlisting}
+import random
+
+print(random.randint(0, 10))
+\end{lstlisting}
+
+
+\begin{enumerate}
+    \item Utilise la liste des cases vides et choisis-en une au hasard pour y placer un O.
+    \item L'ordinateur joue-t-il bien le tour des Os ? As-tu trop facile pour gagner ?
+    \item Modifie le programme pour qu'il vérifie d'abord si en jouant une case il peut créer une ligne gagnante.
+    \item Encore un peu facile ? Modifie le programme pour que l'ordinateur détecte que toi (les Xs) pourrait créer une ligne au tour suivant et bloque cette case.
+\end{enumerate}
+
+\pagebreak
+
+\section{Pour aller plus loin}
+
+Voici quelques idées pour aller encore plus loin dans ton jeu:
+\begin{enumerate}
+    \item Compte les points et affiche les en haut de l'écran.
+    \item Ajoute un son quand on essaie de choisir une case occupée.
+    \item Colorie la ligne gagnante.
+    \item Améliore encore le jeu de l'ordinateur.
+\end{enumerate}
+
+Pour cela, tu auras besoin des éléments suivants:
+
+\subsection*{Afficher du texte à l'écran}
+
+Le morceau de code suivant permet d'afficher le texte 'Bonjour' à l'écran. Le deuxième paramètre représente la position du coin supérieur gauche du texte.
+
+\begin{lstlisting}
+screen.draw.text('Bonjour', (0,0))
+\end{lstlisting}
+
+\subsection*{Convertir un nombre en texte}
+
+Les variables en Python ont un type, un nombre ce n'est pas la même chose que du texte (ou chaîne de caractères, string en anglais). Si tu as une variable qui contient un nombre et que tu veux la transformer en chaîne de caractères, utilise la fonction \lstinline{str()} comme dans l'exemple ci-dessous.
+
+\begin{lstlisting}
+nombre = 10
+texte = str(nombre)
+\end{lstlisting}
+
+\subsection*{Jouer une note}
+
+Pygame Zero offre une fonction pour jouer une note de musique, telle que montré dans le code ci-dessous. Le premier paramètre est la fréquence de la note en Hertz (c'est sa hauteur, un plus petit nombre donne une note plus grave, un plus grand nombre une note plus aiguë), le second paramètre indique la durée de la note en seconde.
+
+\begin{lstlisting}
+tone.play(100, 0.1)
+\end{lstlisting}
+
+\end{document}
