@@ -112,17 +112,17 @@ Une liste en Python est un objet permettant de stocker un ensemble d'éléments,
 
 Voici un exemple de liste de mots
 \begin{lstlisting}
-  liste = ['rouge', 'vert', 'bleu']
+  couleurs = ['rouge', 'vert', 'bleu']
 \end{lstlisting}
 
 On peut accéder à un élément de la liste en utilisant son index (sa position), en comptant à partir de 0. Affichons par exemple le premier élément de la liste
 \begin{lstlisting}
-  print(liste[0])
+  print(couleurs[0])
 \end{lstlisting}
 
 Si on veut parcourir l'ensemble de la liste, on peut utiliser une boucle comme ceci
 \begin{lstlisting}
-  for couleur in enumerate(liste):
+  for couleur in enumerate(couleurs):
       print(couleur)
 \end{lstlisting}
 \marginnote{\textcolor{deepblue}{for~=~pour\\in~=~dans\\enumerate~=énumérer}}[-3,5em]
@@ -144,7 +144,7 @@ Modifie le programme précédent pour n'afficher que la couleur.
 On peut aussi assigner la valeur de chacun des différents éléments d'un tuple directement à des variables en une opération appelée "unpacking" (qu'on pourrait traduire par "déballage").
 
 Dans l'exemple ci-dessus on aurait pu écrire la boucle\\
-\lstinline{for position, couleur in enumerate(liste):}\\
+\lstinline{for position, couleur in enumerate(couleurs):}\\
 afin d'avoir directement accès au nom de la couleur.
 
 \section{Bonjour Pygame Zero}

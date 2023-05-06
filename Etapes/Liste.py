@@ -1,12 +1,12 @@
-liste = ['rouge', 'vert', 'bleu']
+couleurs = ['rouge', 'vert', 'bleu']
 
-print(liste[0])
+print(couleurs[0])
 
-for couleur in enumerate(liste):
+for couleur in enumerate(couleurs):
     print(couleur)
 
-for couleur in enumerate(liste):
+for couleur in enumerate(couleurs):
     print(couleur[1])
 
-for i, couleur in enumerate(liste):
+for i, couleur in enumerate(couleurs):
     print(couleur)
